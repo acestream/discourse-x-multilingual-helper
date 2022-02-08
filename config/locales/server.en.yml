@@ -1,0 +1,4 @@
+en:
+  site_settings:
+    multilingual_helper_enabled: Enable multilingual helper
+    category_translations_path: Category translation path (JSON-file).

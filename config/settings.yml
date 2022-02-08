@@ -1,0 +1,7 @@
+plugins:
+  multilingual_helper_enabled:
+    default: true
+    client: true
+  category_translations_path:
+    default: ''
+    client: true

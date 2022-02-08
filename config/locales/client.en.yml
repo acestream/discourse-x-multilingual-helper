@@ -1,0 +1,4 @@
+en:
+  js:
+    topic_custom_field:
+      placeholder: "Enter a %{field}"
