@@ -121,12 +121,12 @@ after_initialize do
       # 0 = EN
       # 1 = RU
       parsed = cooked.split("===ru===")
-      cooked_en = parsed[0]
-      cooked_ru = parsed[1]
 
       # Special handling only when the delimiter is present
       if parsed.length() == 2
+        # replace original "cooked" with EN version
         cooked = parsed[0]
+        cooked_ru = parsed[1]
         post.custom_fields["cooked_ru"] = cooked_ru
 
         post.topic.category.description = cooked_en
