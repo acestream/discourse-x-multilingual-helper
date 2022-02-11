@@ -66,10 +66,10 @@ after_initialize do
     Translations.data[object.slug]
   end
 
-  # Replace category.excerpt with category.excerpt_ru when appropriate
+  # Replace category.description_excerpt with category.description_excerpt_ru when appropriate
   add_to_serializer(:basic_category, :description_excerpt) do
     if I18n.locale == :ru and object.custom_fields["description_excerpt_ru"]
-      PrettyText.excerpt(object.custom_fields["description_excerpt_ru"], 300)
+      object.custom_fields["description_excerpt_ru"]
     else
       object.uncategorized? ? I18n.t('category.uncategorized_description', locale: I18n.locale) : object.description_excerpt
     end
@@ -129,10 +129,16 @@ after_initialize do
         cooked_ru = parsed[1]
         post.custom_fields["cooked_ru"] = cooked_ru
 
-        post.topic.category.description = cooked_en
-        post.topic.category.custom_fields["description_excerpt_ru"] = cooked_ru
+        # update category description (default)
+        post.topic.category.description = cooked
+
+        # set category description_excerpt (ru)
+        post.topic.category.custom_fields["description_excerpt_ru"] = PrettyText.excerpt(cooked_ru, 300)
+
+        # save category
         post.topic.category.save!
 
+        # update topic excerpt
         topic_excerpt_ru = Post.excerpt(parsed[1], SiteSetting.topic_excerpt_maxlength, strip_links: true, strip_images: true, post: post)
         post.topic.custom_fields["excerpt_ru"] = topic_excerpt_ru
         post.topic.save!
